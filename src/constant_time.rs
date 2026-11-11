@@ -1,3 +1,4 @@
+#![allow(clippy::chunks_exact_to_as_chunks)]
 //! Constant-time Base64 implementation.
 //!
 //! Designed for cryptographic operations where data confidentiality is critical.
