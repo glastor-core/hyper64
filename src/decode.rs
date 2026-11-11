@@ -35,7 +35,16 @@ pub fn decode_to_slice(
     #[cfg(target_arch = "x86_64")]
     {
         let is_url_safe = config.encode_table[62] == b'-';
-        if crate::simd::has_avx2() && input.len() >= 32 {
+        if crate::simd::has_avx512() && input.len() >= 64 {
+            let (in_done, out_done) =
+                unsafe { crate::simd::decode_avx512(input, output, is_url_safe) };
+            if in_done > 0 {
+                let rem_in = &input[in_done..];
+                let rem_out = &mut output[out_done..];
+                let written = decode_to_slice(rem_in, rem_out, config)?;
+                return Ok(out_done + written);
+            }
+        } else if crate::simd::has_avx2() && input.len() >= 32 {
             let (in_done, out_done) =
                 unsafe { crate::simd::decode_avx2(input, output, is_url_safe) };
             if in_done > 0 {
@@ -47,6 +56,21 @@ pub fn decode_to_slice(
         } else if crate::simd::has_ssse3() && input.len() >= 16 {
             let (in_done, out_done) =
                 unsafe { crate::simd::decode_ssse3(input, output, is_url_safe) };
+            if in_done > 0 {
+                let rem_in = &input[in_done..];
+                let rem_out = &mut output[out_done..];
+                let written = decode_scalar(rem_in, rem_out, config)?;
+                return Ok(out_done + written);
+            }
+        }
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        let is_url_safe = config.encode_table[62] == b'-';
+        if crate::simd::has_wasm_simd128() && input.len() >= 16 {
+            let (in_done, out_done) =
+                unsafe { crate::simd::decode_wasm_simd(input, output, is_url_safe) };
             if in_done > 0 {
                 let rem_in = &input[in_done..];
                 let rem_out = &mut output[out_done..];
@@ -98,7 +122,25 @@ pub fn decode_in_place<'a>(
     #[cfg(target_arch = "x86_64")]
     {
         let is_url_safe = config.encode_table[62] == b'-';
-        if crate::simd::has_avx2() && len >= 32 {
+        if crate::simd::has_avx512() && len >= 64 {
+            let (in_done, out_done) = unsafe {
+                let in_slice = core::slice::from_raw_parts(ptr, len);
+                let out_slice = core::slice::from_raw_parts_mut(ptr, len);
+                crate::simd::decode_avx512(in_slice, out_slice, is_url_safe)
+            };
+            in_idx = in_done;
+            out_idx = out_done;
+            if crate::simd::has_avx2() && (len - in_idx) >= 32 {
+                let (in_done2, out_done2) = unsafe {
+                    let in_slice = core::slice::from_raw_parts(ptr.add(in_idx), len - in_idx);
+                    let out_slice =
+                        core::slice::from_raw_parts_mut(ptr.add(out_idx), len - out_idx);
+                    crate::simd::decode_avx2(in_slice, out_slice, is_url_safe)
+                };
+                in_idx += in_done2;
+                out_idx += out_done2;
+            }
+        } else if crate::simd::has_avx2() && len >= 32 {
             let (in_done, out_done) = unsafe {
                 let in_slice = core::slice::from_raw_parts(ptr, len);
                 let out_slice = core::slice::from_raw_parts_mut(ptr, len);
@@ -111,6 +153,20 @@ pub fn decode_in_place<'a>(
                 let in_slice = core::slice::from_raw_parts(ptr, len);
                 let out_slice = core::slice::from_raw_parts_mut(ptr, len);
                 crate::simd::decode_ssse3(in_slice, out_slice, is_url_safe)
+            };
+            in_idx = in_done;
+            out_idx = out_done;
+        }
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        let is_url_safe = config.encode_table[62] == b'-';
+        if crate::simd::has_wasm_simd128() && len >= 16 {
+            let (in_done, out_done) = unsafe {
+                let in_slice = core::slice::from_raw_parts(ptr, len);
+                let out_slice = core::slice::from_raw_parts_mut(ptr, len);
+                crate::simd::decode_wasm_simd(in_slice, out_slice, is_url_safe)
             };
             in_idx = in_done;
             out_idx = out_done;

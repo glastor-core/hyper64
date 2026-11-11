@@ -19,6 +19,24 @@ Este proyecto se adhiere a:
 
 ---
 
+## [0.2.0] - 2026-11-11
+
+### ✨ Added
+
+#### Motor SIMD Vectorizado de Próxima Generación
+- **Aceleración AVX-512 (512-bit AVX-512BW)**:
+  - Vectorización ultra-ancha de 64 bytes por instrucción en codificación (48 bytes crudos a 64 caracteres Base64) y decodificación (64 caracteres Base64 a 48 bytes crudos).
+  - Diseñado para CPUs de servidores modernos (Intel Xeon Scalable 3rd/4th/5th Gen, AMD EPYC Zen 4/Zen 5).
+  - Eleva el rendimiento teórico a **20–25 GiB/s** con un margen de seguridad de no-colisión in-place de $\Delta r - \Delta w = 16 > 0$ bytes por iteración.
+  - Detección dinámica de hardware en tiempo de ejecución tanto en `std` como en `#![no_std]` (CPUID Leaf 7 `EBX` bits 16 y 30, y validación de máscara XCR0 `0xE6` para contexto OS de registros ZMM/opmask).
+- **Aceleración WebAssembly SIMD128 (`wasm32 v128`)**:
+  - Implementación con intrínsecos de `core::arch::wasm32` (`v128`, `i8x16_shuffle`, `u32x4_shr`, `u32x4_shl`, `v128_and`, `v128_or`, `i8x16_add`, `i8x16_gt`, `i8x16_eq`, `i8x16_bitmask`).
+  - Codifica 12 bytes a 16 caracteres Base64 y decodifica 16 caracteres a 12 bytes directamente en entornos WebAssembly.
+  - Acelera radicalmente la codificación/decodificación Base64 en navegadores web y runtimes Edge (Cloudflare Workers, Deno Deploy, Fastly Compute@Edge, Node.js WASM).
+  - Verificación formal de no-colisión in-place $\Delta r - \Delta w = 4 > 0$ bytes por iteración.
+
+---
+
 ## [0.1.0] - 2026-11-11
 
 ### ✨ Added

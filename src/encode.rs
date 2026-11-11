@@ -4,7 +4,10 @@ use crate::alphabet::Config;
 use crate::scalar::{encode_scalar, encoded_len};
 
 #[cfg(target_arch = "x86_64")]
-use crate::simd::{encode_avx2, encode_ssse3, has_avx2, has_ssse3};
+use crate::simd::{encode_avx2, encode_avx512, encode_ssse3, has_avx2, has_avx512, has_ssse3};
+
+#[cfg(target_arch = "wasm32")]
+use crate::simd::{encode_wasm_simd, has_wasm_simd128};
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
@@ -28,13 +31,29 @@ pub fn encode_to_slice(input: &[u8], output: &mut [u8], config: &Config) -> usiz
     #[cfg(target_arch = "x86_64")]
     {
         let is_url_safe = config.encode_table[62] == b'-';
-        if has_avx2() && input.len() >= 24 {
+        if has_avx512() && input.len() >= 48 {
+            let (in_done, out_done) = unsafe { encode_avx512(input, output, is_url_safe) };
+            let rem_in = &input[in_done..];
+            let rem_out = &mut output[out_done..];
+            return out_done + encode_to_slice(rem_in, rem_out, config);
+        } else if has_avx2() && input.len() >= 24 {
             let (in_done, out_done) = unsafe { encode_avx2(input, output, is_url_safe) };
             let rem_in = &input[in_done..];
             let rem_out = &mut output[out_done..];
             return out_done + encode_scalar(rem_in, rem_out, config);
         } else if has_ssse3() && input.len() >= 12 {
             let (in_done, out_done) = unsafe { encode_ssse3(input, output, is_url_safe) };
+            let rem_in = &input[in_done..];
+            let rem_out = &mut output[out_done..];
+            return out_done + encode_scalar(rem_in, rem_out, config);
+        }
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        let is_url_safe = config.encode_table[62] == b'-';
+        if has_wasm_simd128() && input.len() >= 12 {
+            let (in_done, out_done) = unsafe { encode_wasm_simd(input, output, is_url_safe) };
             let rem_in = &input[in_done..];
             let rem_out = &mut output[out_done..];
             return out_done + encode_scalar(rem_in, rem_out, config);

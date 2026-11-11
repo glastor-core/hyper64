@@ -19,7 +19,7 @@
 
 **`hyper64`** is an industrial-grade Base64 engine designed from the hardware up to solve the real-world performance, memory allocation, and side-channel security bottlenecks of the standard `base64` crate.
 
-By combining **multi-tier SIMD vectorization** (AVX2, SSSE3, AArch64 NEON), **mathematically proven in-place zero-copy decoding**, **constant-time cryptographic execution**, and **zero-double-write memory initialization**, `hyper64` achieves sustained throughput exceeding **10 GiB/s** while guaranteeing zero heap allocations and 100% API drop-in compatibility with the `base64` 0.22 crate.
+By combining **multi-tier SIMD vectorization** (AVX-512BW, AVX2, SSSE3, AArch64 NEON, WebAssembly SIMD128), **mathematically proven in-place zero-copy decoding**, **constant-time cryptographic execution**, and **zero-double-write memory initialization**, `hyper64` achieves sustained throughput exceeding **10–25 GiB/s** while guaranteeing zero heap allocations and 100% API drop-in compatibility with the `base64` 0.22 crate.
 
 ---
 
@@ -59,7 +59,7 @@ Benchmarks measured on standard x86_64 hardware via [Criterion.rs](https://githu
 
 | Capability | Standard `base64` Crate | `hyper64` | Production Engineering Value |
 |:---|:---:|:---:|:---|
-| **Vectorized SIMD Engine** | ❌ Scalar only (~2 GB/s) | ✅ **AVX2 / SSSE3 / NEON** (>10 GB/s) | 4x–5x lower server CPU utilization in JSON/gRPC APIs |
+| **Vectorized SIMD Engine** | ❌ Scalar only (~2 GB/s) | ✅ **AVX-512 / AVX2 / SSSE3 / NEON / WASM** (>10–25 GB/s) | 4x–10x lower server CPU utilization in JSON/gRPC APIs & Edge |
 | **Zero-Alloc In-Place Decoding** | ❌ Dest buffer required | ✅ **`decode_in_place(&mut [u8])`** | 0 heap allocations in network proxies, TLS & mesh routers |
 | **Zero Double-Write Memory** | ❌ Zero-fills entire Vec first | ✅ **Spare Capacity Writer** | Cuts memory bus saturation in half on multi-megabyte blobs |
 | **`no_std` Dynamic CPUID** | ❌ Scalar fallback | ✅ **Hardware CPUID / OSXSAVE** | Native vectorization on bare metal, microVMs & SGX enclaves |

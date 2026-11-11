@@ -40,6 +40,7 @@ pub use permissive::{PemBlock, decode_pem_in_place, decode_permissive_in_place};
 #[cfg(feature = "alloc")]
 pub use permissive::{decode_pem, decode_permissive};
 pub use scalar::encoded_len;
+pub use simd::{has_avx2, has_avx512, has_neon, has_ssse3, has_wasm_simd128};
 
 #[cfg(feature = "std")]
 pub use io::{DecoderReader, EncoderWriter};

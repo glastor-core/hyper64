@@ -18,10 +18,13 @@ For any Base64 encoded byte slice $B$ of length $L \ge 0$, in-place decoding int
 ### Mathematical Proof
 Let $r_k$ denote the read pointer index and $w_k$ denote the write pointer index at discrete iteration step $k$:
 - Base state: $r_0 = 0$, $w_0 = 0 \implies r_0 \ge w_0$.
+- **AVX-512 Vectorized Step**: Consumes $\Delta r = 64$ ASCII bytes, writes $\Delta w = 48$ raw decoded bytes:
+  $$\Delta r - \Delta w = 64 - 48 = 16 > 0$$
+  $$r_{k+1} - w_{k+1} = (r_k + 64) - (w_k + 48) = (r_k - w_k) + 16 \ge r_k - w_k$$
 - **AVX2 Vectorized Step**: Consumes $\Delta r = 32$ ASCII bytes, writes $\Delta w = 24$ raw decoded bytes:
   $$\Delta r - \Delta w = 32 - 24 = 8 > 0$$
   $$r_{k+1} - w_{k+1} = (r_k + 32) - (w_k + 24) = (r_k - w_k) + 8 \ge r_k - w_k$$
-- **SSSE3 / NEON Vectorized Step**: Consumes $\Delta r = 16$ ASCII bytes, writes $\Delta w = 12$ raw decoded bytes:
+- **WASM SIMD128 / SSSE3 / NEON Vectorized Step**: Consumes $\Delta r = 16$ ASCII bytes, writes $\Delta w = 12$ raw decoded bytes:
   $$\Delta r - \Delta w = 16 - 12 = 4 > 0$$
 - **SWAR Permissive Step**: Consumes $\Delta r = 8$ ASCII bytes, writes $\Delta w = 6$ raw decoded bytes:
   $$\Delta r - \Delta w = 8 - 6 = 2 > 0$$
@@ -47,11 +50,12 @@ Let $r_k$ denote the read pointer index and $w_k$ denote the write pointer index
 
 ## 4. Hardware Feature Detection and CPUID Invariants
 
-- Functions decorated with `#[target_feature(enable = "avx2")]` or `#[target_feature(enable = "ssse3")]` must only execute on CPUs that support those instruction sets.
+- Functions decorated with `#[target_feature(enable = "avx512f,avx512bw")]`, `#[target_feature(enable = "avx2")]`, `#[target_feature(enable = "ssse3")]`, or `#[target_feature(enable = "simd128")]` must only execute on CPUs that support those instruction sets.
 - `hyper64` enforces dynamic hardware gating:
-  1. **Compile-Time**: If the binary is built with `-C target-feature=+avx2` or `-C target-cpu=native`, the check is evaluated as `true` at compile time with zero branch overhead.
-  2. **Standard Library (`feature = "std"`)**: Uses `std::is_x86_feature_detected!("avx2")` backed by OS kernel CPUID caches.
-  3. **Embedded / Kernel (`#![no_std]`)**: Directly queries `core::arch::x86_64::__cpuid` and validates `_xgetbv(0)` to confirm that the operating system has actively enabled YMM/XMM register saving in context switches (`XCR0[2:1] == 11b`).
+  1. **Compile-Time**: If the binary is built with target features enabled (`-C target-feature=+avx512f,+avx512bw` or `+simd128`), the check is evaluated as `true` at compile time with zero branch overhead.
+  2. **Standard Library (`feature = "std"`)**: Uses `std::is_x86_feature_detected!("avx512f") && std::is_x86_feature_detected!("avx512bw")` backed by OS kernel CPUID caches.
+  3. **Embedded / Kernel (`#![no_std]`)**: Directly queries `core::arch::x86_64::__cpuid` and validates `_xgetbv(0)` to confirm that the operating system has actively enabled ZMM/YMM/XMM register saving in context switches (`XCR0[7:5, 2:1] == 0xE6`). Then validates CPUID Leaf 7 `EBX` bit 16 (`AVX-512F`) and bit 30 (`AVX-512BW`).
+  4. **WebAssembly SIMD128**: Checked via compile-time target feature `#[cfg(target_feature = "simd128")]`.
 
 ---
 
