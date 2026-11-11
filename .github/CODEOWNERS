@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════════
-# GLASTOR® STRATA - CODEOWNERS CONFIGURATION
+# GLASTOR® HYPER64 - CODEOWNERS CONFIGURATION
 # ═══════════════════════════════════════════════════════════════════════════
 # Propósito: Definir la propiedad del código y protocolos de revisión.
 # Referencia: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
@@ -12,35 +12,32 @@
 .github/ @glastor-core @glastor-dev
 Cargo.toml @glastor-core @glastor-dev
 Cargo.lock @glastor-core @glastor-dev
+deny.toml @glastor-core @glastor-dev
 
-# [ CRATES DEL NÚCLEO ]
-crates/glastor-aria-core/ @glastor-core @glastor-dev
-crates/glastor-css-binder/ @glastor-core @glastor-dev
-crates/glastor-ui-cli/ @glastor-core @glastor-dev
+# [ MOTOR DE BAJO NIVEL & SIMD ]
+src/simd.rs @glastor-core @glastor-dev
+src/scalar.rs @glastor-core @glastor-dev
+src/constant_time.rs @glastor-core @glastor-dev
+src/permissive.rs @glastor-core @glastor-dev
+src/decode.rs @glastor-core @glastor-dev
+src/encode.rs @glastor-core @glastor-dev
+src/engine.rs @glastor-core @glastor-dev
+src/display.rs @glastor-core @glastor-dev
+src/const_fn.rs @glastor-core @glastor-dev
+src/io.rs @glastor-core @glastor-dev
+src/serde.rs @glastor-core @glastor-dev
 
-# [ EJEMPLOS Y SHOWCASES ]
-examples/ @glastor-core @glastor-dev
-index.html @glastor-core @glastor-dev
-public/ @glastor-core @glastor-dev
-dist/ @glastor-core @glastor-dev
-
-# [ ESPECIFICACIONES & TOKENS ]
-schemas/ @glastor-core @glastor-dev
-tokens.json @glastor-core @glastor-dev
-
-# [ INTEGRACIONES ECOSISTEMA GLASTOR ]
-.byte-gauge.toml @glastor-core @glastor-dev
-.specter.toml @glastor-core @glastor-dev
-zerho.json @glastor-core @glastor-dev
-llms.txt @glastor-core @glastor-dev
-llms-full.txt @glastor-core @glastor-dev
+# [ ARNESES DE PRUEBAS & FUZZING ]
+fuzz/ @glastor-core @glastor-dev
+benches/ @glastor-core @glastor-dev
+tests/ @glastor-core @glastor-dev
 
 # [ GOBERNANZA & COMPLIANCE ]
 README.md @glastor-core @glastor-dev
+SAFETY.md @glastor-core @glastor-dev
 CHANGELOG.md @glastor-core @glastor-dev
 CONTRIBUTING.md @glastor-core @glastor-dev
 CONTRIBUTORS.md @glastor-core @glastor-dev
 CITATION.cff @glastor-core @glastor-dev
-SECURITY.md @glastor-core @glastor-dev
 LICENSE-MIT @glastor-core @glastor-dev
 LICENSE-APACHE @glastor-core @glastor-dev

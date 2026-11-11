@@ -1,15 +1,15 @@
 ## 📋 Descripción del Cambio
 
-<!-- Explica de forma concisa qué problema resuelve este Pull Request o qué funcionalidad agrega a GLASTOR® Strata. -->
+<!-- Explica de forma concisa qué problema resuelve este Pull Request o qué funcionalidad optimiza en GLASTOR® hyper64. -->
 
 ## 🎯 Tipo de Cambio
 
-- [ ] 🐛 Bug fix (corrección de error sin breaking changes)
-- [ ] ✨ Nueva primitiva FSM / Característica (nueva funcionalidad compatible hacia atrás)
-- [ ] 💥 Breaking change (cambio que altera interfaces públicas o FSMs previas)
-- [ ] ⚡ Optimización de rendimiento (reducción de huella de memoria o micro-benchmarks)
-- [ ] 📝 Documentación (actualización de especificaciones, `llms.txt` o README)
-- [ ] 🔧 Mantenimiento / CI / Tooling (refactorización, Clippy, GitHub Actions)
+- [ ] 🐛 Bug fix (corrección de error sin breaking changes en la decodificación o padding)
+- [ ] ✨ Nueva característica / extensión SIMD (ej: AVX-512, nuevos alfabetos o adaptadores)
+- [ ] 💥 Breaking change (cambio que altera interfaces públicas del Engine o firmas de funciones)
+- [ ] ⚡ Optimización de rendimiento (mejora de micro-benchmarks o reducción de ciclos SIMD)
+- [ ] 📝 Documentación (actualización de README, SAFETY.md o doctests)
+- [ ] 🔧 Mantenimiento / CI / Tooling (refactorización, Clippy, workflows de GitHub Actions)
 
 ## 🔗 Issues Relacionados
 
@@ -22,19 +22,20 @@
 <!-- Marca las verificaciones ejecutadas localmente antes de enviar el PR: -->
 
 - [ ] Formateo estricto: `cargo fmt --all --check`
-- [ ] Linter Clippy sin advertencias: `cargo clippy --workspace --all-targets --all-features`
-- [ ] Suite de pruebas completa: `cargo test --workspace --all-features`
-- [ ] Auditoría de memoria con byte-gauge: `cargo test -p glastor-aria-core --test memory_footprint`
-- [ ] Verificación de contratos con specter: `cargo run --bin cargo-ui -- audit`
-- [ ] Generación de documentación: `cargo doc --workspace --no-deps`
+- [ ] Linter Clippy sin advertencias: `cargo clippy --all-targets --all-features`
+- [ ] Suite de pruebas completa: `cargo test --all-features`
+- [ ] Verificación en `no_std`: `cargo test --lib --no-default-features`
+- [ ] Validación de doctests: `cargo test --doc`
+- [ ] Verificación de aliasing y UB con Miri: `cargo miri test --test in_place --test constant_time --test rfc4648`
+- [ ] Auditoría de licencias y dependencias: `cargo-deny check`
 
 ## 🛡️ Checklist de Protección de Rama (`main`)
 
 - [ ] Mi rama parte de la versión más reciente de `main`.
-- [ ] Se mantiene el estándar `#![forbid(unsafe_code)]` en todos los archivos modificados.
+- [ ] Todo bloque `unsafe` agregado cuenta con una justificación de seguridad y respeta los invariantes de `SAFETY.md`.
 - [ ] Los mensajes de commit cumplen con [COMMIT_CONVENTION.md](./COMMIT_CONVENTION.md).
 - [ ] He actualizado el archivo `CHANGELOG.md` si corresponde.
-- [ ] No se introducen dependencias de Node.js, npm ni código no auditado.
+- [ ] No se introducen dependencias de producción externas innecesarias.
 
 ---
 

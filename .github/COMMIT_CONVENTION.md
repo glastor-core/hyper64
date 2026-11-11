@@ -1,4 +1,4 @@
-# 🏛️ Convención de Mensajes de Commit (Conventional Commits) — GLASTOR® Strata
+# 🏛️ Convención de Mensajes de Commit (Conventional Commits) — GLASTOR® hyper64
 
 Para escalar el desarrollo y garantizar una **Software Supply Chain** transparente, este repositorio implementa una convención estricta basada en el estándar [Conventional Commits 1.0.0](https://www.conventionalcommits.org/).
 
@@ -20,35 +20,38 @@ Esta práctica impulsa la automatización de versiones con SemVer, la generació
 
 | Tipo | Propósito | Impacto en Release |
 | :--- | :--- | :---: |
-| `feat` | Nueva característica o primitiva FSM | Minor (`v0.X.0`) |
-| `fix` | Corrección de bug o comportamiento inesperado | Patch (`v0.0.X`) |
-| `perf` | Optimización de memoria, SIMD o tiempo de compilación | Patch (`v0.0.X`) |
-| `refactor` | Reestructuración de código sin alterar comportamiento | Ninguno |
-| `docs` | Actualización de documentación, `llms.txt` o specs | Ninguno |
-| `test` | Nuevas pruebas unitarias, de integración o footprints | Ninguno |
+| `feat` | Nueva funcionalidad, extensión SIMD o soporte de API | Minor (`v0.X.0`) |
+| `fix` | Corrección de bug o discrepancia en decodificación/padding | Patch (`v0.0.X`) |
+| `perf` | Optimización de ciclos SIMD, vectorización o buffers | Patch (`v0.0.X`) |
+| `refactor` | Reestructuración interna sin alterar comportamiento público | Ninguno |
+| `docs` | Actualización de documentación, SAFETY.md o README | Ninguno |
+| `test` | Nuevas pruebas unitarias, oráculos o fuzz targets | Ninguno |
 | `ci` | Ajustes en GitHub Actions, workflows o automatizaciones | Ninguno |
-| `chore` | Tareas de mantenimiento, dependencias o tooling | Ninguno |
+| `chore` | Tareas de mantenimiento, dependencias o metadatos | Ninguno |
 
-### 2. Scopes Oficiales de Strata
+### 2. Scopes Oficiales de hyper64
 
-- `aria`: Primitivas y máquinas de estado en `glastor-aria-core` (`dialog`, `accordion`, `tabs`, `toast`, `grid`).
-- `css`: Motor de escaneo y compilación de CSS en `glastor-css-binder`.
-- `motion`: Físicas de resortes y generación de keyframes GPU (`glastor-motion`).
-- `cli`: Herramienta de línea de comandos `cargo ui` / `cargo strata`.
-- `tokens`: Sincronizador de Design Tokens W3C (`sync-tokens`).
-- `assets`: Iconografía vectorial SVG, favicons y manifiestos PWA.
-- `landing`: Página web interactiva de demostración (`index.html`).
+- `simd`: Vectorización AVX2, SSSE3, AArch64 NEON o AVX-512 (`src/simd.rs`).
+- `decode`: Decodificación general, in-place y de slices (`src/decode.rs`).
+- `encode`: Codificación general, streaming de chunks y buffers (`src/encode.rs`).
+- `permissive`: Parser PEM, MIME y tolerancia a whitespace con SWAR (`src/permissive.rs`).
+- `crypto`: Modo en tiempo constante y mitigación de canal lateral (`src/constant_time.rs`).
+- `engine`: Capa de compatibilidad drop-in con `base64::Engine` (`src/engine.rs`).
+- `io`: Adaptadores de streaming síncrono `std::io` y asíncrono Tokio (`src/io.rs`).
+- `serde`: Módulos de serialización y deserialización zero-copy (`src/serde.rs`).
+- `const`: Funciones y macros en tiempo de compilación (`src/const_fn.rs`).
+- `fuzz`: Objetivos y arneses de libFuzzer (`fuzz/`).
 
 ---
 
 ## 💡 Ejemplos Válidos
 
 ```text
-feat(grid): implement 2d roving arrow navigation and virtual slicing
-fix(css): prevent arbitrary border colors from overriding border-b
-perf(fsm): optimize dialog transition loop to sub-microsecond latency
-docs(tokens): document W3C DTCG json schema synchronization
-ci(main): enforce branch protection and cargo audit checks
+feat(simd): add AVX-512BW vectorized decoding fast-path
+fix(permissive): handle trailing whitespace preceding certificate footer
+perf(encode): eliminate zero-filling overhead via spare capacity buffer
+docs(safety): formally prove the r >= w in-place decoding invariant
+ci(miri): enforce stacked borrows checks in continuous integration
 ```
 
 ---
