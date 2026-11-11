@@ -1,0 +1,52 @@
+name: Multi-Architecture & Endianness Verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  cross-test:
+    name: Cross (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # ARM64 Linux (AArch64 NEON verification)
+          - target: aarch64-unknown-linux-gnu
+            test: true
+          # Big-Endian verification (s390x IBM Z)
+          - target: s390x-unknown-linux-gnu
+            test: true
+          # Bare-metal embedded Cortex-M4 (no_std check)
+          - target: thumbv7em-none-eabihf
+            test: false
+            no_std: true
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Install Stable Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install Cross Tool
+        run: cargo install cross --git https://github.com/cross-rs/cross --locked
+
+      - name: Test / Check Target
+        run: |
+          if [ "${{ matrix.no_std }}" = "true" ]; then
+            cross check --target ${{ matrix.target }} --no-default-features
+          elif [ "${{ matrix.test }}" = "true" ]; then
+            cross test --target ${{ matrix.target }} --all-features
+          else
+            cross build --target ${{ matrix.target }} --all-features
+          fi
+

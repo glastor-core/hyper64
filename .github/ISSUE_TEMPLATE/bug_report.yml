@@ -1,0 +1,81 @@
+name: "🐛 Reporte de Bug"
+description: "Reporta un problema técnico, error de compilación o anomalía en GLASTOR® Strata"
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tomarte el tiempo de reportar este problema en **GLASTOR® Strata**.
+        Proporcionar detalles específicos sobre el crate afectado, el framework WASM y el entorno de Cargo agiliza la resolución.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Descripción del fallo"
+      description: "Explica de forma concisa qué falló o qué comportamiento anómalo se presentó."
+      placeholder: "Ejemplo: DialogFsm no restaura el foco previo al presionar Escape en Safari..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: crate_module
+    attributes:
+      label: "Crate o Submódulo Afectado"
+      description: "¿Qué componente de Strata presentó el problema?"
+      options:
+        - "glastor-aria-core (Primitivas FSM, FocusTrap, Dismissable, Grid, Motion)"
+        - "glastor-css-binder (Scanner Rayon, Zero-Node build.rs, Reglas CSS, Minificador)"
+        - "glastor-ui-cli (cargo ui add, sync-tokens, lint-a11y, watch, audit)"
+        - "Multi-Framework Codegen (Leptos, Dioxus, Yew)"
+        - "Ecosistema GLASTOR Core (byte-gauge, specter, zerho docs)"
+        - "Otro / General"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: "Framework Web Rust WASM"
+      description: "¿Qué framework o runtime estás usando?"
+      options:
+        - "Leptos (v0.6 / v0.7+)"
+        - "Dioxus (v0.5 / v0.6+)"
+        - "Yew (v0.21+)"
+        - "Vanilla Rust WASM (web-sys / wasm-bindgen)"
+        - "CLI en Cargo nativo"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Pasos para reproducir"
+      description: "Secuencia determinista de pasos para replicar el problema."
+      placeholder: |
+        1. Configurar build.rs con BuildBinder::new().scan_dir("src")...
+        2. Ejecutar `cargo build`
+        3. Observar el error en...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Entorno Técnico"
+      description: "Versión de Rust, OS y herramientas."
+      placeholder: |
+        - Rust: 1.85.0 (Edition 2024)
+        - Target: wasm32-unknown-unknown / x86_64
+        - OS: Windows 11 / Ubuntu 24.04 / macOS Sequoia
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Salida de Compilación o Logs de Error"
+      description: "Pega la salida relevante de `cargo test`, `cargo build` o consola del navegador."
+      render: shell
+    validations:
+      required: false

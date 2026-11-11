@@ -1,0 +1,33 @@
+name: Miri Undefined Behavior Verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run every Sunday at 04:00 UTC
+    - cron: '0 4 * * 0'
+
+permissions:
+  contents: read
+
+jobs:
+  miri:
+    name: Miri Memory Model & Aliasing Verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Install Rust Nightly with Miri
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: miri
+
+      - name: Test under Miri (Stacked Borrows & Pointer Invariants)
+        env:
+          MIRIFLAGS: "-Zmiri-symbolic-alignment-check -Zmiri-disable-isolation"
+        run: |
+          cargo miri test --test in_place --test constant_time --test rfc4648
+

@@ -1,0 +1,62 @@
+name: "✨ Solicitud de Funcionalidad"
+description: "Propón una nueva primitiva ARIA, regla CSS zero-Node o comando para GLASTOR® Strata"
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Gracias por tu iniciativa para hacer de **GLASTOR® Strata** un motor de accesibilidad y UI nativo aún más potente!
+        Priorizamos propuestas fundamentadas en las especificaciones WAI-ARIA 1.2, WCAG 2.2 AAA y en la filosofía Zero-Node.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: "Área o Crate Principal"
+      description: "Selecciona el área técnica donde encaja esta propuesta."
+      options:
+        - "Primitivas ARIA (Nuevas FSMs: Select, Combobox, Slider, Menubar)"
+        - "Motor de Movimiento y Animaciones (Spring Physics, Keyframes)"
+        - "CSS Binder & Compilación Zero-Node (Nuevas utilidades, Variantes, build.rs)"
+        - "Design Tokens & Sincronización W3C DTCG"
+        - "CLI de Cargo (cargo ui: generadores, AST patching, linters)"
+        - "Soporte de Frameworks (Leptos, Dioxus, Yew)"
+        - "Auditorías de Rendimiento (byte-gauge, specter, zerho)"
+        - "Otro"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problema o Necesidad"
+      description: "¿Qué limitación o fricción actual busca resolver esta propuesta?"
+      placeholder: "Actualmente se requiere escribir manualmente la FSM para..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "Propuesta de Solución"
+      description: "¿Cómo debería funcionar en Strata? Incluye API de Rust propuesta o ejemplo de uso."
+      placeholder: "Proponemos añadir SelectFsm en glastor-aria-core::primitives::select..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: wcag_aria
+    attributes:
+      label: "Cumplimiento WAI-ARIA / WCAG"
+      description: "¿Qué criterios de conformidad o patrones de W3C cubre esta funcionalidad?"
+      placeholder: "WAI-ARIA 1.2 Combobox Pattern, WCAG 2.2 Criterio 2.1.1 (Teclado)..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Contexto Adicional / Referencias"
+      description: "Enlaces a documentación técnica, RFCs o implementaciones de referencia."
+    validations:
+      required: false

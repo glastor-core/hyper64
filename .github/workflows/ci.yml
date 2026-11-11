@@ -1,0 +1,91 @@
+name: CI Matrix & Cross-Platform Verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # 1. Predictive CI Orchestration via glastor-core/vortex
+  orchestrate:
+    name: Predictive CI Orchestrator (Vortex)
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.vortex.outputs.should_run }}
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Run Glastor Vortex Orchestrator
+        id: vortex
+        uses: glastor-core/vortex@v1
+        continue-on-error: true
+
+  # 2. Multi-OS Matrix & SIMD Verification
+  test-matrix:
+    name: Test (${{ matrix.os }}, ${{ matrix.target }})
+    needs: [orchestrate]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: macos-latest
+            target: aarch64-apple-darwin
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Install Stable Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+          components: clippy, rustfmt
+
+      - name: Cache Cargo Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Check Formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run Clippy Linter
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Run Comprehensive Test Suite
+        run: cargo test --all-features --target ${{ matrix.target }}
+
+      - name: Verify #![no_std] Core Compilation
+        run: cargo check --no-default-features --target ${{ matrix.target }}
+
+  # 3. Documentation & Intra-Doc Links Verification
+  rustdoc:
+    name: Rustdoc & Broken Link Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Install Stable Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Generate Rustdoc
+        run: cargo doc --all-features --no-deps
+        env:
+          RUSTDOCFLAGS: -D warnings
+

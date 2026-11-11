@@ -1,0 +1,16 @@
+# FUNDING.yml - GLASTOR® Strata
+# Configuración de patrocinio y sostenibilidad para GitHub.
+
+# GitHub Sponsors
+github:
+  - glastor-dev
+  - glastor-core
+
+# Open Collective
+open_collective: datagroupssl
+
+# URLs personalizadas
+custom:
+  - https://paypal.me/datagroupssl
+  - https://opencollective.com/datagroupssl
+  - https://glastor.io
