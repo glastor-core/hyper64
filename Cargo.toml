@@ -1,9 +1,10 @@
 [package]
 name = "hyper64"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
+rust-version = "1.85.0"
 authors = ["Andrés Antonio Cardoso <glastor.info@gmail.com>", "GLASTOR® Core Organization"]
-description = "Next-generation, ultra-fast, zero-allocation Base64 engine in Rust with SIMD and const fn support"
+description = "Next-generation, ultra-fast, zero-allocation Base64 engine in Rust with AVX-512, AVX2, NEON, WASM SIMD128, and const fn support"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/glastor-core/hyper64"
@@ -11,6 +12,22 @@ homepage = "https://github.com/glastor-core/hyper64"
 documentation = "https://docs.rs/hyper64"
 keywords = ["base64", "simd", "encoding", "decoding", "performance"]
 categories = ["encoding", "no-std", "cryptography"]
+include = [
+    "/src",
+    "/tests",
+    "/benches",
+    "/Cargo.toml",
+    "/README.md",
+    "/LICENSE-MIT",
+    "/LICENSE-APACHE",
+    "/CHANGELOG.md",
+    "/SAFETY.md",
+    "/CITATION.cff",
+]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
 default = ["std"]

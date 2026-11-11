@@ -5,10 +5,11 @@
 </p>
 
 <p align="center">
-  <a href="https://crates.io/crates/hyper64"><img src="https://img.shields.io/badge/crates.io-v0.1.0-orange.svg" alt="Crates.io"></a>
+  <a href="https://crates.io/crates/hyper64"><img src="https://img.shields.io/badge/crates.io-v0.2.0-orange.svg" alt="Crates.io"></a>
   <a href="https://docs.rs/hyper64"><img src="https://img.shields.io/badge/docs.rs-hyper64-blue.svg" alt="Documentation"></a>
+  <a href="https://github.com/glastor-core/hyper64/actions/workflows/ci.yml"><img src="https://github.com/glastor-core/hyper64/actions/workflows/ci.yml/badge.svg" alt="CI Status"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License"></a>
-  <img src="https://img.shields.io/badge/rustc-1.80%2B-blue.svg" alt="MSRV">
+  <img src="https://img.shields.io/badge/rustc-1.85%2B-blue.svg" alt="MSRV 1.85+">
   <img src="https://img.shields.io/badge/no__std-compatible-success.svg" alt="no_std">
   <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" alt="Zero Dependencies">
 </p>
@@ -79,7 +80,7 @@ Add `hyper64` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-hyper64 = "0.1"
+hyper64 = "0.2"
 ```
 
 ### Cargo Features
@@ -95,7 +96,7 @@ hyper64 = "0.1"
 For embedded and bare-metal environments:
 ```toml
 [dependencies]
-hyper64 = { version = "0.1", default-features = false }
+hyper64 = { version = "0.2", default-features = false }
 ```
 
 ---
