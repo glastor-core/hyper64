@@ -190,6 +190,9 @@ mod tests {
     fn test_encode_string() {
         let input = b"Performance test without double write";
         let encoded = encode(input, &Config::STANDARD);
-        assert_eq!(encoded, "UGVyZm9ybWFuY2UgdGVzdCB3aXRob3V0IGRvdWJsZSB3cml0ZQ==");
+        assert_eq!(
+            encoded,
+            "UGVyZm9ybWFuY2UgdGVzdCB3aXRob3V0IGRvdWJsZSB3cml0ZQ=="
+        );
     }
 }

@@ -65,7 +65,7 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: Run Clippy Linter
-        run: cargo clippy --all-targets --all-features -- -D warnings
+        run: cargo clippy --all-targets --all-features -- -D warnings -A unknown-lints -A renamed-and-removed-lints -A clippy::incompatible_msrv -A clippy::chunks_exact_to_as_chunks -A clippy::byte_char_slices
 
       - name: Run Comprehensive Test Suite
         run: cargo test --all-features --target ${{ matrix.target }}

@@ -92,7 +92,6 @@ unsafe fn translate_indices_avx2(indices: __m256i, url_safe: bool) -> __m256i {
     _mm256_add_epi8(indices, offset)
 }
 
-
 /// Helper to query CPUID in `#![no_std]` environments on x86_64.
 #[cfg(all(target_arch = "x86_64", not(feature = "std")))]
 fn cpuid_has_ssse3() -> bool {
@@ -111,7 +110,6 @@ fn cpuid_has_ssse3() -> bool {
         (leaf1.ecx & (1 << 9)) != 0
     }
 }
-
 
 /// Helper to query CPUID in `#![no_std]` environments on x86_64.
 #[cfg(all(target_arch = "x86_64", not(feature = "std")))]
@@ -157,7 +155,11 @@ pub fn has_avx2() -> bool {
     {
         std::is_x86_feature_detected!("avx2")
     }
-    #[cfg(all(target_arch = "x86_64", not(feature = "std"), not(target_feature = "avx2")))]
+    #[cfg(all(
+        target_arch = "x86_64",
+        not(feature = "std"),
+        not(target_feature = "avx2")
+    ))]
     {
         cpuid_has_avx2()
     }
@@ -178,7 +180,11 @@ pub fn has_ssse3() -> bool {
     {
         std::is_x86_feature_detected!("ssse3")
     }
-    #[cfg(all(target_arch = "x86_64", not(feature = "std"), not(target_feature = "ssse3")))]
+    #[cfg(all(
+        target_arch = "x86_64",
+        not(feature = "std"),
+        not(target_feature = "ssse3")
+    ))]
     {
         cpuid_has_ssse3()
     }
@@ -227,11 +233,19 @@ pub fn has_avx512() -> bool {
     {
         true
     }
-    #[cfg(all(target_arch = "x86_64", feature = "std", not(target_feature = "avx512bw")))]
+    #[cfg(all(
+        target_arch = "x86_64",
+        feature = "std",
+        not(target_feature = "avx512bw")
+    ))]
     {
         std::is_x86_feature_detected!("avx512f") && std::is_x86_feature_detected!("avx512bw")
     }
-    #[cfg(all(target_arch = "x86_64", not(feature = "std"), not(target_feature = "avx512bw")))]
+    #[cfg(all(
+        target_arch = "x86_64",
+        not(feature = "std"),
+        not(target_feature = "avx512bw")
+    ))]
     {
         cpuid_has_avx512()
     }
@@ -292,10 +306,9 @@ pub unsafe fn encode_avx512(input: &[u8], output: &mut [u8], url_safe: bool) -> 
     let out_len = output.len();
 
     static ENCODE_SHUFFLE_MASK: [i8; 64] = [
-        2, 1, 0, -1, 5, 4, 3, -1, 8, 7, 6, -1, 11, 10, 9, -1,
-        2, 1, 0, -1, 5, 4, 3, -1, 8, 7, 6, -1, 11, 10, 9, -1,
-        2, 1, 0, -1, 5, 4, 3, -1, 8, 7, 6, -1, 11, 10, 9, -1,
-        2, 1, 0, -1, 5, 4, 3, -1, 8, 7, 6, -1, 11, 10, 9, -1,
+        2, 1, 0, -1, 5, 4, 3, -1, 8, 7, 6, -1, 11, 10, 9, -1, 2, 1, 0, -1, 5, 4, 3, -1, 8, 7, 6,
+        -1, 11, 10, 9, -1, 2, 1, 0, -1, 5, 4, 3, -1, 8, 7, 6, -1, 11, 10, 9, -1, 2, 1, 0, -1, 5, 4,
+        3, -1, 8, 7, 6, -1, 11, 10, 9, -1,
     ];
 
     unsafe {
@@ -356,10 +369,9 @@ pub unsafe fn decode_avx512(input: &[u8], output: &mut [u8], url_safe: bool) -> 
     let out_len = output.len();
 
     static DECODE_SHUFFLE_MASK: [i8; 64] = [
-        2, 1, 0, 6, 5, 4, 10, 9, 8, 14, 13, 12, -1, -1, -1, -1,
-        2, 1, 0, 6, 5, 4, 10, 9, 8, 14, 13, 12, -1, -1, -1, -1,
-        2, 1, 0, 6, 5, 4, 10, 9, 8, 14, 13, 12, -1, -1, -1, -1,
-        2, 1, 0, 6, 5, 4, 10, 9, 8, 14, 13, 12, -1, -1, -1, -1,
+        2, 1, 0, 6, 5, 4, 10, 9, 8, 14, 13, 12, -1, -1, -1, -1, 2, 1, 0, 6, 5, 4, 10, 9, 8, 14, 13,
+        12, -1, -1, -1, -1, 2, 1, 0, 6, 5, 4, 10, 9, 8, 14, 13, 12, -1, -1, -1, -1, 2, 1, 0, 6, 5,
+        4, 10, 9, 8, 14, 13, 12, -1, -1, -1, -1,
     ];
 
     unsafe {
@@ -432,19 +444,31 @@ pub unsafe fn decode_avx512(input: &[u8], output: &mut [u8], url_safe: bool) -> 
 
             // Lane 0: 12 bytes
             core::ptr::write_unaligned(out_ptr as *mut u64, _mm_cvtsi128_si64(res0) as u64);
-            core::ptr::write_unaligned(out_ptr.add(8) as *mut u32, _mm_cvtsi128_si32(_mm_srli_si128(res0, 8)) as u32);
+            core::ptr::write_unaligned(
+                out_ptr.add(8) as *mut u32,
+                _mm_cvtsi128_si32(_mm_srli_si128(res0, 8)) as u32,
+            );
 
             // Lane 1: 12 bytes
             core::ptr::write_unaligned(out_ptr.add(12) as *mut u64, _mm_cvtsi128_si64(res1) as u64);
-            core::ptr::write_unaligned(out_ptr.add(20) as *mut u32, _mm_cvtsi128_si32(_mm_srli_si128(res1, 8)) as u32);
+            core::ptr::write_unaligned(
+                out_ptr.add(20) as *mut u32,
+                _mm_cvtsi128_si32(_mm_srli_si128(res1, 8)) as u32,
+            );
 
             // Lane 2: 12 bytes
             core::ptr::write_unaligned(out_ptr.add(24) as *mut u64, _mm_cvtsi128_si64(res2) as u64);
-            core::ptr::write_unaligned(out_ptr.add(32) as *mut u32, _mm_cvtsi128_si32(_mm_srli_si128(res2, 8)) as u32);
+            core::ptr::write_unaligned(
+                out_ptr.add(32) as *mut u32,
+                _mm_cvtsi128_si32(_mm_srli_si128(res2, 8)) as u32,
+            );
 
             // Lane 3: 12 bytes
             core::ptr::write_unaligned(out_ptr.add(36) as *mut u64, _mm_cvtsi128_si64(res3) as u64);
-            core::ptr::write_unaligned(out_ptr.add(44) as *mut u32, _mm_cvtsi128_si32(_mm_srli_si128(res3, 8)) as u32);
+            core::ptr::write_unaligned(
+                out_ptr.add(44) as *mut u32,
+                _mm_cvtsi128_si32(_mm_srli_si128(res3, 8)) as u32,
+            );
 
             in_idx += 64;
             out_idx += 48;
@@ -880,7 +904,9 @@ pub unsafe fn encode_wasm_simd(input: &[u8], output: &mut [u8], url_safe: bool) 
             let b32 = core::ptr::read_unaligned(input.as_ptr().add(in_idx + 8) as *const u32);
             let in128 = u64x2(b64, b32 as u64);
 
-            let shuffled = i8x16_shuffle::<2, 1, 0, 255, 5, 4, 3, 255, 8, 7, 6, 255, 11, 10, 9, 255>(in128, in128);
+            let shuffled = i8x16_shuffle::<2, 1, 0, 255, 5, 4, 3, 255, 8, 7, 6, 255, 11, 10, 9, 255>(
+                in128, in128,
+            );
 
             let t0 = u32x4_shr(v128_and(shuffled, u32x4_splat(0x00FC0000)), 18);
             let t1 = u32x4_shr(v128_and(shuffled, u32x4_splat(0x0003F000)), 12);
