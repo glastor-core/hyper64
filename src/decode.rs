@@ -20,9 +20,9 @@ pub fn decode_to_slice(
     let in_len = input.len();
     let mut min_capacity = (in_len / 4) * 3;
     if in_len >= 2 && input[in_len - 1] == b'=' {
-        min_capacity -= 1;
+        min_capacity = min_capacity.saturating_sub(1);
         if input[in_len - 2] == b'=' {
-            min_capacity -= 1;
+            min_capacity = min_capacity.saturating_sub(1);
         }
     }
     if output.len() < min_capacity {
@@ -389,4 +389,19 @@ pub fn decode(input: impl AsRef<[u8]>, config: &Config) -> Result<Vec<u8>, Decod
         out.set_len(written);
     }
     Ok(out)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::STANDARD;
+
+    #[test]
+    fn test_short_invalid_padded_slice_does_not_underflow() {
+        let _ = decode(b"!=", &STANDARD);
+        let _ = decode(b"=", &STANDARD);
+        let mut out = [0u8; 4];
+        let _ = decode_to_slice(b"!=", &mut out, &STANDARD);
+        let _ = decode_to_slice(b"=", &mut out, &STANDARD);
+    }
 }

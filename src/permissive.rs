@@ -49,12 +49,12 @@ pub fn decode_permissive_in_place<'a>(
     while r < len {
         // Fast-path: Check 8-byte block for contiguous non-whitespace valid Base64 symbols
         while r + 8 <= len {
-            let chunk = unsafe { core::ptr::read_unaligned(ptr.add(r) as *const u64) };
+            let b = unsafe { core::ptr::read_unaligned(ptr.add(r) as *const [u8; 8]) };
+            let chunk = u64::from_ne_bytes(b);
             if has_byte_le_32(chunk) {
                 break;
             }
 
-            let b = chunk.to_le_bytes();
             let s0 = dec_table[b[0] as usize];
             let s1 = dec_table[b[1] as usize];
             let s2 = dec_table[b[2] as usize];

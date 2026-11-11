@@ -180,9 +180,9 @@ pub fn decode_slice_ct(input: &[u8], output: &mut [u8]) -> Result<usize, DecodeE
 
     let mut min_capacity = (in_len / 4) * 3;
     if in_len >= 2 && input[in_len - 1] == b'=' {
-        min_capacity -= 1;
+        min_capacity = min_capacity.saturating_sub(1);
         if input[in_len - 2] == b'=' {
-            min_capacity -= 1;
+            min_capacity = min_capacity.saturating_sub(1);
         }
     }
     if output.len() < min_capacity {
