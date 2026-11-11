@@ -118,6 +118,20 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-isologo {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(54, 191, 138, 0.45));
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+    }
+
+    .logo-group:hover .logo-isologo {
+      transform: scale(1.08) rotate(-2deg);
+      filter: drop-shadow(0 0 16px rgba(54, 191, 138, 0.8));
     }
 
     .logo-badge {
@@ -868,15 +882,15 @@
   <header>
     <div class="container">
       <nav class="nav">
-        <div class="logo-group">
-          <div class="logo-badge">⚡</div>
+        <a href="#" class="logo-group">
+          <img src="assets/isologo.webp" alt="GLASTOR® Logo" class="logo-isologo">
           <div class="logo-text">
             <div>
               <span class="brand-corp">GLASTOR® CORE</span><br>
               <span class="brand-name">hyper</span><span class="brand-highlight">64</span>
             </div>
           </div>
-        </div>
+        </a>
         <div class="nav-links">
           <a href="#playground" class="nav-link">Playground</a>
           <a href="#simd" class="nav-link">SIMD Engine</a>
@@ -1221,7 +1235,7 @@ assert_eq!(decoded, b"Hello, GLASTOR!");</code></pre>
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="logo-group">
-            <div class="logo-badge" style="width: 32px; height: 32px; font-size: 16px;">⚡</div>
+            <img src="assets/isologo.webp" alt="GLASTOR® Logo" class="logo-isologo" style="width: 32px; height: 32px;">
             <span class="logo-text" style="font-size: 18px;">GLASTOR® hyper64</span>
           </div>
           <p>Next-generation, ultra-high-throughput, zero-allocation Base64 engine for Rust. Engineered for cloud infrastructure, microVMs, and cryptographic protocols.</p>

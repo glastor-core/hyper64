@@ -1,4 +1,4 @@
-# hyper64 ⚡
+# <img src="assets/isologo.webp" width="40" height="40" alt="GLASTOR Logo" align="absmiddle"> hyper64 ⚡
 
 <p align="center">
   <img src="assets/banner.svg" alt="GLASTOR hyper64 Banner" width="100%">
