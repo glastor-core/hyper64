@@ -119,7 +119,7 @@ fn test_permissive_random_whitespace_injection() {
 
     // Randomly insert whitespaces into clean_b64
     let mut dirty_b64 = Vec::new();
-    let whitespaces = [b' ', b'\t', b'\r', b'\n'];
+    let whitespaces = *b" \t\r\n";
     for (i, &b) in clean_b64.as_bytes().iter().enumerate() {
         dirty_b64.push(b);
         if i % 3 == 0 {

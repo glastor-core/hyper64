@@ -33,7 +33,7 @@ jobs:
         run: cargo test --all-features
 
       - name: Verify clippy passes
-        run: cargo clippy --all-targets --all-features -- -D warnings -A clippy::incompatible_msrv -A clippy::chunks_exact_to_as_chunks
+        run: cargo clippy --all-targets --all-features -- -D warnings -A unknown-lints -A renamed-and-removed-lints -A clippy::incompatible_msrv -A clippy::chunks_exact_to_as_chunks -A clippy::byte_char_slices
 
       - name: Verify documentation builds
         run: cargo doc --no-deps --all-features

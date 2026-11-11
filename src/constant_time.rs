@@ -1,3 +1,4 @@
+#![allow(unknown_lints)]
 #![allow(clippy::chunks_exact_to_as_chunks)]
 //! Constant-time Base64 implementation.
 //!
