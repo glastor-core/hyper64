@@ -784,21 +784,24 @@ pub unsafe fn encode_neon(input: &[u8], output: &mut [u8], url_safe: bool) -> (u
     while in_idx + 12 <= in_len && out_idx + 16 <= out_len {
         for chunk in 0..4 {
             let offset = in_idx + chunk * 3;
-            let b0 = *input.get_unchecked(offset) as u32;
-            let b1 = *input.get_unchecked(offset + 1) as u32;
-            let b2 = *input.get_unchecked(offset + 2) as u32;
+            // SAFETY: Invariants checked by loop bounds and chunk offset
+            unsafe {
+                let b0 = *input.get_unchecked(offset) as u32;
+                let b1 = *input.get_unchecked(offset + 1) as u32;
+                let b2 = *input.get_unchecked(offset + 2) as u32;
 
-            let n = (b0 << 16) | (b1 << 8) | b2;
-            let c0 = *enc_table.get_unchecked((n >> 18) as usize);
-            let c1 = *enc_table.get_unchecked(((n >> 12) & 0x3F) as usize);
-            let c2 = *enc_table.get_unchecked(((n >> 6) & 0x3F) as usize);
-            let c3 = *enc_table.get_unchecked((n & 0x3F) as usize);
+                let n = (b0 << 16) | (b1 << 8) | b2;
+                let c0 = *enc_table.get_unchecked((n >> 18) as usize);
+                let c1 = *enc_table.get_unchecked(((n >> 12) & 0x3F) as usize);
+                let c2 = *enc_table.get_unchecked(((n >> 6) & 0x3F) as usize);
+                let c3 = *enc_table.get_unchecked((n & 0x3F) as usize);
 
-            let word = u32::from_ne_bytes([c0, c1, c2, c3]);
-            core::ptr::write_unaligned(
-                output.as_mut_ptr().add(out_idx + chunk * 4) as *mut u32,
-                word,
-            );
+                let word = u32::from_ne_bytes([c0, c1, c2, c3]);
+                core::ptr::write_unaligned(
+                    output.as_mut_ptr().add(out_idx + chunk * 4) as *mut u32,
+                    word,
+                );
+            }
         }
         in_idx += 12;
         out_idx += 16;
@@ -828,11 +831,14 @@ pub unsafe fn decode_neon(input: &[u8], output: &mut [u8], url_safe: bool) -> (u
         let mut combined = 0u8;
         let mut sextets = [0u8; 16];
 
-        for i in 0..16 {
-            let c = *input.get_unchecked(in_idx + i);
-            let s = *dec_table.get_unchecked(c as usize);
-            sextets[i] = s;
-            combined |= s;
+        for (i, sextet_slot) in sextets.iter_mut().enumerate() {
+            // SAFETY: in_idx + i < in_idx + 16 <= in_len
+            unsafe {
+                let c = *input.get_unchecked(in_idx + i);
+                let s = *dec_table.get_unchecked(c as usize);
+                *sextet_slot = s;
+                combined |= s;
+            }
         }
 
         if (combined & 0xC0) != 0 {
@@ -848,9 +854,12 @@ pub unsafe fn decode_neon(input: &[u8], output: &mut [u8], url_safe: bool) -> (u
             let n = (s0 << 18) | (s1 << 12) | (s2 << 6) | s3;
 
             let out_offset = out_idx + chunk * 3;
-            *output.get_unchecked_mut(out_offset) = (n >> 16) as u8;
-            *output.get_unchecked_mut(out_offset + 1) = (n >> 8) as u8;
-            *output.get_unchecked_mut(out_offset + 2) = n as u8;
+            // SAFETY: out_offset + 2 <= out_idx + 12 <= out_len
+            unsafe {
+                *output.get_unchecked_mut(out_offset) = (n >> 16) as u8;
+                *output.get_unchecked_mut(out_offset + 1) = (n >> 8) as u8;
+                *output.get_unchecked_mut(out_offset + 2) = n as u8;
+            }
         }
 
         in_idx += 16;
