@@ -1,6 +1,10 @@
 # hyper64 ⚡
 
 <p align="center">
+  <img src="assets/banner.svg" alt="GLASTOR hyper64 Banner" width="100%">
+</p>
+
+<p align="center">
   <strong>Next-Generation, Ultra-High-Throughput, Zero-Allocation Base64 Engine for Rust</strong>
 </p>
 
