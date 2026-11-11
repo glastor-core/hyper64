@@ -13,7 +13,7 @@
   <a href="https://docs.rs/hyper64"><img src="https://img.shields.io/badge/docs.rs-hyper64-blue.svg" alt="Documentation"></a>
   <a href="https://github.com/glastor-core/hyper64/actions/workflows/ci.yml"><img src="https://github.com/glastor-core/hyper64/actions/workflows/ci.yml/badge.svg" alt="CI Status"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License"></a>
-  <img src="https://img.shields.io/badge/rustc-1.85%2B-blue.svg" alt="MSRV 1.85+">
+  <img src="https://img.shields.io/badge/rustc-1.89%2B-blue.svg" alt="MSRV 1.89+">
   <img src="https://img.shields.io/badge/no__std-compatible-success.svg" alt="no_std">
   <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" alt="Zero Dependencies">
 </p>
