@@ -2,7 +2,7 @@
 name = "hyper64"
 version = "0.1.0"
 edition = "2024"
-authors = ["Antigravity Team"]
+authors = ["Andrés Antonio Cardoso <glastor.info@gmail.com>", "GLASTOR® Core Organization"]
 description = "Next-generation, ultra-fast, zero-allocation Base64 engine in Rust with SIMD and const fn support"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
