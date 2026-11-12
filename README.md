@@ -17,6 +17,9 @@
   <img src="https://img.shields.io/badge/rustc-1.89%2B-blue.svg?style=flat-square" alt="MSRV 1.89+">
   <img src="https://img.shields.io/badge/no__std-compatible-success.svg?style=flat-square" alt="no_std">
   <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg?style=flat-square" alt="Zero Dependencies">
+  <br>
+  <a href="https://github.com/glastor-core/hyper64"><img src="https://img.shields.io/github/stars/glastor-core/hyper64?style=social" alt="GitHub Stars"></a>
+  <a href="https://github.com/glastor-dev"><img src="https://img.shields.io/github/followers/glastor-dev?label=Follow%20%40glastor-dev&style=social" alt="Follow @glastor-dev"></a>
 </p>
 
 ---
@@ -268,6 +271,18 @@ For complete formal proofs, refer to [SAFETY.md](SAFETY.md).
 - **libFuzzer with AddressSanitizer (ASan)**: Automated fuzzing targets (`fuzz_decode`, `fuzz_roundtrip`, `fuzz_pem`).
 - **Multi-Architecture Matrix**: Validated on Linux x86_64, macOS Apple Silicon (AArch64 NEON), Windows MSVC, Big-Endian s390x, and Cortex-M4 bare metal.
 - **Supply Chain Guard**: Audited with `glastor-core/specter` (SemVer stability), `glastor-core/byte-gauge` (binary hardening), and `cargo-deny` (license and vulnerability tracking).
+
+---
+
+## ⭐ Star History
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=glastor-core/hyper64&type=Date)](https://star-history.com/#glastor-core/hyper64&Date)
+
+*If you find hyper64 useful or interesting, please consider starring the repository and following [@glastor-dev](https://github.com/glastor-dev) on GitHub!*
+
+</div>
 
 ---
 
