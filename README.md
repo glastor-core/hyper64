@@ -1,7 +1,7 @@
 # <img src="assets/isologo.webp" width="40" height="40" alt="GLASTOR Logo" align="absmiddle"> hyper64 ⚡
 
 <p align="center">
-  <img src="assets/banner.svg" alt="GLASTOR hyper64 Banner" width="100%">
+  <img src="https://res.cloudinary.com/dzualplqi/image/upload/v1794597612/N%C3%BAcleo_Cibern%C3%A9tico_Hyper64_ugtyyx.png" alt="hyper64 – Núcleo Cibernético AVX-512 Base64 Engine" width="100%" style="border-radius: 8px;">
 </p>
 
 <p align="center">
@@ -12,6 +12,7 @@
   <a href="https://crates.io/crates/hyper64"><img src="https://img.shields.io/crates/v/hyper64?style=flat-square&color=orange&logo=rust" alt="Crates.io Version"></a>
   <a href="https://crates.io/crates/hyper64"><img src="https://img.shields.io/crates/d/hyper64?style=flat-square&color=blue&logo=rust" alt="Crates.io Downloads"></a>
   <a href="https://docs.rs/hyper64"><img src="https://img.shields.io/docsrs/hyper64?style=flat-square&logo=docs.rs" alt="Documentation"></a>
+  <a href="https://glastor-core.github.io/hyper64/"><img src="https://img.shields.io/badge/Telemetry-Criterion%20Benchmarks-blue?style=flat-square&logo=github" alt="Criterion Benchmarks"></a>
   <a href="https://github.com/glastor-core/hyper64/actions/workflows/ci.yml"><img src="https://github.com/glastor-core/hyper64/actions/workflows/ci.yml/badge.svg" alt="CI Status"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg?style=flat-square" alt="License"></a>
   <img src="https://img.shields.io/badge/rustc-1.89%2B-blue.svg?style=flat-square" alt="MSRV 1.89+">
@@ -33,6 +34,8 @@ By combining **multi-tier SIMD vectorization** (AVX-512BW, AVX2, SSSE3, AArch64 
 ---
 
 ## 📊 Empirical Benchmarks
+
+> 📈 **Live Telemetry & Historical Trends:** View multi-commit micro-benchmark metrics, regression telemetry, and throughput graphs on our official [GitHub Pages Criterion Dashboard](https://glastor-core.github.io/hyper64/).
 
 Benchmarks measured on standard x86_64 hardware via [Criterion.rs](https://github.com/bheisler/criterion.rs) comparing `hyper64` against `crates.io/crates/base64` (v0.22):
 
