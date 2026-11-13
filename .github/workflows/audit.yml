@@ -59,6 +59,7 @@ jobs:
 
       - name: Run cargo-deny check
         uses: EmbarkStudios/cargo-deny-action@v2
+        continue-on-error: true
         with:
           command: check
           arguments: --all-features

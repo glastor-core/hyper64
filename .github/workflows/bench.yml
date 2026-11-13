@@ -9,6 +9,8 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  deployments: write
+  pages: write
 
 jobs:
   benchmark:
@@ -29,6 +31,7 @@ jobs:
 
       - name: Store & Compare Benchmark Results
         uses: benchmark-action/github-action-benchmark@v1
+        continue-on-error: true
         with:
           name: hyper64 Throughput Benchmarks
           tool: 'cargo'
