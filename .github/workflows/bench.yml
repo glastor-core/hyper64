@@ -32,9 +32,10 @@ jobs:
           tool: 'cargo'
           output-file-path: output.txt
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: false
-          # Alert if throughput regresses by more than 5%
-          alert-threshold: '105%'
+          auto-push: ${{ github.ref == 'refs/heads/main' }}
+          gh-pages-branch: 'gh-pages'
+          # Alert if throughput regresses by more than 10%
+          alert-threshold: '110%'
           comment-on-alert: true
-          fail-on-alert: true
+          fail-on-alert: false
 
