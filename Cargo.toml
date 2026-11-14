@@ -16,6 +16,7 @@ include = [
     "/src",
     "/tests",
     "/benches",
+    "/examples",
     "/Cargo.toml",
     "/README.md",
     "/LICENSE-MIT",
@@ -49,3 +50,15 @@ tokio = { version = "1.0", features = ["rt", "macros", "io-util"] }
 [[bench]]
 name = "benchmarks"
 harness = false
+
+[[example]]
+name = "quickstart"
+required-features = ["std"]
+
+[[example]]
+name = "tokio_streaming"
+required-features = ["tokio", "std"]
+
+[[example]]
+name = "constant_time_security"
+required-features = ["std"]

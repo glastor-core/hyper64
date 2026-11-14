@@ -252,6 +252,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ---
 
+### 🏃 Running the Production Examples
+
+You can run any of the verified examples directly from the repository:
+
+```bash
+# 1. Core API & Zero-Allocation In-Place Quickstart
+cargo run --example quickstart
+
+# 2. Asynchronous Non-Blocking Streaming with Tokio
+cargo run --example tokio_streaming --features tokio
+
+# 3. Constant-Time Cryptographic Anti-Side-Channel Hardening
+cargo run --example constant_time_security
+```
+
+---
+
 ## 🔒 Safety & Formal Invariants
 
 `hyper64` is built under a strict zero-undefined-behavior mandate:
