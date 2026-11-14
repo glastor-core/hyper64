@@ -19,6 +19,26 @@ Este proyecto se adhiere a:
 
 ---
 
+## [0.2.1] - 2026-11-14
+
+### ✨ Added
+- **Suite de Ejemplos de Producción (`examples/`)**:
+  - `examples/quickstart.rs`: Demostración completa de APIs principales, decodificación in-place zero-copy y formateador directo `display()`.
+  - `examples/tokio_streaming.rs`: Streaming asíncrono no bloqueante con Tokio (`AsyncEncoderWriter` y `AsyncDecoderReader`).
+  - `examples/constant_time_security.rs`: Blindaje criptográfico branchless en tiempo constante y validación `ct_eq`.
+- **Telemetría de Benchmarks en GitHub Pages**:
+  - Despliegue automatizado de gráficos de rendimiento y regresión continuos con Criterion en `https://glastor-core.github.io/hyper64/`.
+- **Empaquetado Oficial en Crates.io**:
+  - Inclusión de `/examples` en el campo `include` de `Cargo.toml`.
+
+### 🛡️ Fixed & Hardened
+- **Compatibilidad con Sparse Registry en `cargo-deny`**:
+  - Soporte explícito a `sparse+https://index.crates.io/` y ampliación de licencias permisivas transitivas (`0BSD`, `MIT-0`, `ISC`, `CC0-1.0`, `BSL-1.0`, etc.).
+- **Guardias de CI de Rendimiento**:
+  - Permisos de publicación y `fetch-depth: 0` para captura continua de métricas en Criterion.
+
+---
+
 ## [0.2.0] - 2026-11-11
 
 ### ✨ Added
