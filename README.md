@@ -19,6 +19,9 @@
   <img src="https://img.shields.io/badge/no__std-compatible-success.svg?style=flat-square" alt="no_std">
   <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg?style=flat-square" alt="Zero Dependencies">
   <br>
+  <a href="https://codespaces.new/glastor-core/hyper64"><img src="https://github.com/codespaces/badge.svg" alt="Open in GitHub Codespaces"></a>
+  <a href="https://github.com/glastor-core/hyper64/watchers"><img src="https://img.shields.io/github/watchers/glastor-core/hyper64?style=social&label=Watch" alt="GitHub Watchers"></a>
+  <a href="https://github.com/glastor-core/hyper64/fork"><img src="https://img.shields.io/github/forks/glastor-core/hyper64?style=social&label=Fork" alt="GitHub Forks"></a>
   <a href="https://github.com/glastor-core/hyper64"><img src="https://img.shields.io/github/stars/glastor-core/hyper64?style=social" alt="GitHub Stars"></a>
   <a href="https://github.com/glastor-dev"><img src="https://img.shields.io/github/followers/glastor-dev?label=Follow%20%40glastor-dev&style=social" alt="Follow @glastor-dev"></a>
 </p>
@@ -291,6 +294,21 @@ For complete formal proofs, refer to [SAFETY.md](SAFETY.md).
 - **libFuzzer with AddressSanitizer (ASan)**: Automated fuzzing targets (`fuzz_decode`, `fuzz_roundtrip`, `fuzz_pem`).
 - **Multi-Architecture Matrix**: Validated on Linux x86_64, macOS Apple Silicon (AArch64 NEON), Windows MSVC, Big-Endian s390x, and Cortex-M4 bare metal.
 - **Supply Chain Guard**: Audited with `glastor-core/specter` (SemVer stability), `glastor-core/byte-gauge` (binary hardening), and `cargo-deny` (license and vulnerability tracking).
+
+---
+
+## 🏆 Community Benchmark Challenge: Fork & Measure Your CPU
+
+Do you run an **Apple Silicon (M1/M2/M3/M4)**, **AMD Zen 4/5**, or **Intel Raptor Lake / Meteor Lake** processor? Help us expand the official community telemetry!
+
+1. **[Fork this repository](https://github.com/glastor-core/hyper64/fork)** or launch it instantly in [GitHub Codespaces](https://codespaces.new/glastor-core/hyper64).
+2. Run the comparative Criterion benchmark suite:
+   ```bash
+   cargo bench --bench comparison
+   ```
+3. Submit a Pull Request or share your throughput metrics in [Issue #9](https://github.com/glastor-core/hyper64/issues/9) to be featured on our official benchmark leaderboard!
+
+> 🔔 **Stay Updated on Performance Releases**: Click **Watch** (top-right) and choose **Custom ➔ Releases** to get notified of new SIMD kernels, AVX-512 upgrades, and performance telemetry.
 
 ---
 
