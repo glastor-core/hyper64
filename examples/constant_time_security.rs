@@ -28,7 +28,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let decoded_len = decode_constant_time(encoded_slice, &mut decoded_buf)?;
     let recovered_secret = &decoded_buf[..decoded_len];
 
-    println!("2. Constant-Time Decoded Secret (Matches: {}):", recovered_secret == secret_key);
+    println!(
+        "2. Constant-Time Decoded Secret (Matches: {}):",
+        recovered_secret == secret_key
+    );
     println!("   \"{}\"\n", std::str::from_utf8(recovered_secret)?);
 
     // 3. Constant-Time Comparison (`ct_eq`)

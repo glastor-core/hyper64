@@ -6,8 +6,8 @@
 //! - 64 KB: Images, embedded assets, TLS certificates
 //! - 1 MB: Streaming buffers, data blobs, large-scale media chunks
 
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
 use base64::Engine;
+use criterion::{BenchmarkId, Criterion, Throughput, black_box, criterion_group, criterion_main};
 
 const SIZES: [usize; 4] = [64, 1024, 65536, 1048576];
 
@@ -63,30 +63,47 @@ fn bench_comparative_decode(c: &mut Criterion) {
         });
 
         // 2. hyper64 in-place zero-allocation decode
-        group.bench_with_input(BenchmarkId::new("hyper64-in-place", size), &encoded, |b, text| {
-            let mut buf = text.as_bytes().to_vec();
-            b.iter(|| {
-                buf.copy_from_slice(text.as_bytes());
-                let res = hyper64::decode_in_place(black_box(&mut buf), &hyper64::STANDARD).unwrap();
-                black_box(res);
-            });
-        });
+        group.bench_with_input(
+            BenchmarkId::new("hyper64-in-place", size),
+            &encoded,
+            |b, text| {
+                let mut buf = text.as_bytes().to_vec();
+                b.iter(|| {
+                    buf.copy_from_slice(text.as_bytes());
+                    let res =
+                        hyper64::decode_in_place(black_box(&mut buf), &hyper64::STANDARD).unwrap();
+                    black_box(res);
+                });
+            },
+        );
 
         // 3. base64-simd decode
-        group.bench_with_input(BenchmarkId::new("base64-simd", size), &encoded, |b, text| {
-            b.iter(|| {
-                let res = base64_simd::STANDARD.decode_to_vec(black_box(text.as_bytes())).unwrap();
-                black_box(res);
-            });
-        });
+        group.bench_with_input(
+            BenchmarkId::new("base64-simd", size),
+            &encoded,
+            |b, text| {
+                b.iter(|| {
+                    let res = base64_simd::STANDARD
+                        .decode_to_vec(black_box(text.as_bytes()))
+                        .unwrap();
+                    black_box(res);
+                });
+            },
+        );
 
         // 4. base64 crate decode
-        group.bench_with_input(BenchmarkId::new("base64-crate", size), &encoded, |b, text| {
-            b.iter(|| {
-                let res = base64::prelude::BASE64_STANDARD.decode(black_box(text)).unwrap();
-                black_box(res);
-            });
-        });
+        group.bench_with_input(
+            BenchmarkId::new("base64-crate", size),
+            &encoded,
+            |b, text| {
+                b.iter(|| {
+                    let res = base64::prelude::BASE64_STANDARD
+                        .decode(black_box(text))
+                        .unwrap();
+                    black_box(res);
+                });
+            },
+        );
     }
 
     group.finish();

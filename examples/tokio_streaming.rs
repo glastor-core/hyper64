@@ -52,7 +52,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     assert_eq!(&decoded_output[..], &raw_data[..]);
-    println!("   Successfully decoded {} original bytes streamingly:", decoded_output.len());
+    println!(
+        "   Successfully decoded {} original bytes streamingly:",
+        decoded_output.len()
+    );
     println!("   \"{}\"\n", String::from_utf8_lossy(&decoded_output));
 
     println!("✅ All streaming assertions verified without memory buffering bottlenecks!");

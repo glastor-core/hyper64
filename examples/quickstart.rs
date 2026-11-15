@@ -29,7 +29,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let decoded_slice = decode_in_place(&mut in_place_buffer, &hyper64::STANDARD)?;
     assert_eq!(decoded_slice, payload);
     println!("3. Zero-Allocation In-Place Decoding:");
-    println!("   Decoded {} bytes with 0 heap allocations!\n", decoded_slice.len());
+    println!(
+        "   Decoded {} bytes with 0 heap allocations!\n",
+        decoded_slice.len()
+    );
 
     // 4. Zero-Allocation `display()` Formatter
     // Formats directly into any std::fmt::Write without allocating intermediate Strings.
