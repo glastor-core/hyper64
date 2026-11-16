@@ -18,7 +18,7 @@ jobs:
       should_run: ${{ steps.vortex.outputs.should_run }}
     steps:
       - name: Checkout Source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Run Glastor Vortex Orchestrator
         id: vortex
@@ -42,7 +42,7 @@ jobs:
             target: x86_64-pc-windows-msvc
     steps:
       - name: Checkout Source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install Stable Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install Stable Toolchain
         uses: dtolnay/rust-toolchain@stable
